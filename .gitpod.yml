@@ -1,0 +1,81 @@
+图片：
+  文件：.gitpod。Dockerfile
+任务：
+  - 名称： 安卓开胃信息
+    #Gitpod 在此阶段无法在 worspace 中运行模拟器，因为
+    #Google Kubernetes Engine 不支持嵌套虚拟化。
+    #
+    #如果在您自己的基础架构上运行 Gitpod 或在本地通过 Dockerfile 运行
+    # 在公开 vmx 或 svm 的基础架构上，此命令将启动
+    # 模拟器。
+    #
+    # $ 模拟器 -avd avd28 -no-audio -no-window
+    #
+    #在缓解此限制之前，您可以在
+    # 通过 https://appetize.io/ 浏览器
+    命令： |
+printf “\033[3J\033c\033[3J”
+printf 'info[gitpod]： %s\n' \
+“如果你想为安卓构建apk/appbundle，那么你可以考虑做以下事情” \
+“开胃可以帮助您在浏览器中调试应用程序”
+如果测试 -z “$APPETIZE_API_TOKEN”;然后
+printf '%s\n\n' \
+“未设置开胃 API 令牌。运行：“ \
+“ GP 环境 APPETIZE_API_TOKEN=your_token” \
+“并创建一个新工作区以获取应用预览。” \
+“在这里请求您的令牌：如果您想测试 android 构建，https://appetize.io/docs#request-api-token”
+还
+curl -sS --http1.1 “https://$APPETIZE_API_TOKEN@api.appetize.io/v1/apps/$APPETIZE_PUBLICKEY” \
+-F “file=@/workspace/template-flutter/build/app/outputs/flutter-apk/app.apk” \
+-F 平台=安卓 \
+-F “按钮文本=启动应用程序” \
+-f “postSessionButtonText=Start App” \
+> .appetize.json
+APPETIZE_PUBLICKEY=$（jq -r .publicKey .appetize.json）
+gp env “APPETIZE_PUBLICKEY=$APPETIZE_PUBLICKEY”
+出口APPETIZE_PUBLICKEY
+GP 预览“https://appetize.io/embed/$APPETIZE_PUBLICKEY?device=pixel4&autoplay=true”
+fi
+  - 名称：针对不同目标构建
+    初始化： |
+如果测试！-e “pubspec.yaml”;然后{
+rm -f /workspace/.template_init
+颤振创建 --项目名称 gitpod_flutter_quickstart .
+} fi
+Flutter build -v Linux
+颤振构建 -v 网页
+### 如果你想为 android 构建，请考虑取消注释以下行
+# 颤振构建 -v 捆绑包
+# 颤振构建 -v appbundle
+# 颤振构建 -v apk
+### 此行对于以下“- 名称：运行项目”是必需的，以便在预构建无效时继续“颤振运行”之前等待
+# 我们可以使用“gp sync-[done|await] <id>”，但这在“init”和“command”之间不起作用
+触摸 /工作区/.template_init
+  - 名称：运行项目
+    命令： |
+printf “\033[3J\033c\033[3J” && if test ！ -e /workspace/.template_init; then {
+printf 'info[gitpod]： %s\n' “正在等待颤振构建过程完成...”
+直到测试 -e /workspace/.template_init;做
+睡眠 0.5
+做
+} fi
+颤振运行
+端口：
+  - 端口：5900
+    打开时：忽略
+    # VNC
+  - 端口：6080
+    打开时：打开预览
+    # 颤振
+  - 端口：8080
+    打开时：忽略
+  - 端口：5037
+    打开时：忽略
+  - 端口：9100-9101
+    打开时：忽略
+  - 端口：40000-50000
+    打开时：忽略
+
+VSCODE：
+  扩展：
+    - dart-code.flutter
