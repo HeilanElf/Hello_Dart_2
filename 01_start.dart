@@ -71,6 +71,7 @@ abstract class Cache<T> {
   void setByKey(String key, T value);
 }
 
+
 // 开始一个应用程序
 void main() {
   var number = 42; // 声明并初始化一个变量
