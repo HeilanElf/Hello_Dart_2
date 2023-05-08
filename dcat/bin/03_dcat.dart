@@ -1,17 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
 
-//import 'package:args/args.dart';
+import 'package:args/args.dart';
+
 const lineNumber = 'line-number';
 
 void main(List<String> arguments) {
   exitCode = 0; // presume success
- // final parser = ArgParser()..addFlag(lineNumber, negatable: false, abbr: 'n');
+  final parser = ArgParser()..addFlag(lineNumber, negatable: false, abbr: 'n');
 
-  //ArgResults argResults = parser.parse(arguments);
-  //final paths = argResults.rest;
+  ArgResults argResults = parser.parse(arguments);
+  final paths = argResults.rest;
 
-  //dcat(paths, showLineNumbers: argResults[lineNumber] as bool);
+  dcat(paths, showLineNumbers: argResults[lineNumber] as bool);
 }
 
 Future<void> dcat(List<String> paths, {bool showLineNumbers = false}) async {
