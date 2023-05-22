@@ -13,7 +13,7 @@ import 'package:shelf_static/shelf_static.dart' as shelf_static;
 Future<void> main() async {
   // If the "PORT" environment variable is set, listen to it. Otherwise, 8080.
   // https://cloud.google.com/run/docs/reference/container-contract#port
-  final port = int.parse(Platform.environment['PORT'] ?? '38080');
+  final port = int.parse(Platform.environment['PORT'] ?? '8080');
 
   // See https://pub.dev/documentation/shelf/latest/shelf/Cascade-class.html
   final cascade = Cascade()
